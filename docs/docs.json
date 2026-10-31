@@ -4,9 +4,9 @@
   "name": "e2e",
   "description": "An open framework for agentic end-to-end testing.",
   "colors": {
-    "primary": "#171717",
-    "light": "#fafafa",
-    "dark": "#171717"
+    "primary": "#A85400",
+    "light": "#FF8001",
+    "dark": "#A85400"
   },
   "logo": {
     "light": "/logo-black.png",

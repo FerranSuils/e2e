@@ -1,11 +1,13 @@
 /*
- * e2e on Mintlify: one foreground on paper, no accent color.
+ * e2e on Mintlify: one foreground on paper, with TesterArmy orange as the one
+ * accent.
  *
  * docs.json carries the palette (near-black on white in light mode, near-white
- * on near-black in dark; the reader's system picks, the navbar toggle
- * overrides), a logo per mode, and the Geist type. This file adds what the
- * config cannot express: square corners, text weight capped at medium, a
- * foreground rule over the page title, hairlines above every h2, neutral code
+ * on near-black in dark, orange for links and the active page; the reader's
+ * system picks, the navbar toggle overrides), a logo per mode, and the Geist
+ * type. This file adds what the config cannot express: square corners, text
+ * weight capped at medium, an orange rule over the page title, orange focus
+ * rings and hover borders, hairlines above every h2, neutral code
  * surfaces and callouts, and Geist Mono in code. Every color is a custom
  * property below with a light value on :root and a dark one on .dark, so a
  * rule names the property and works in both modes. Mintlify includes every
@@ -29,6 +31,9 @@
   --e2e-surface: rgb(245 245 245);
   --e2e-ta-orange: rgb(255 128 1);
   --e2e-ta-orange-ink: rgb(22 22 22);
+  /* The brand orange is 2.5:1 on white; this darker one is 5.3:1, enough for
+     text and focus rings. */
+  --e2e-accent: rgb(168 84 0);
 }
 
 .dark {
@@ -36,6 +41,7 @@
   --e2e-muted: rgb(163 163 163);
   --e2e-hairline: rgb(78 78 78);
   --e2e-surface: rgb(23 23 23);
+  --e2e-accent: var(--e2e-ta-orange);
 }
 
 body {
@@ -175,7 +181,7 @@ a[href*='utm_campaign=docs_sidebar_banner'] {
   }
 
   &:focus-visible {
-    outline: 2px solid var(--e2e-ink);
+    outline: 2px solid var(--e2e-accent);
     outline-offset: 2px;
   }
 
@@ -224,10 +230,10 @@ ul:has(> li > a[href*='utm_campaign=docs_sidebar_banner']) + * {
   letter-spacing: -0.01em;
 }
 
-/* The page title sits under a rule in the foreground color. */
+/* The page title sits under a rule in the accent color. */
 #page-title {
   padding-top: 1rem;
-  border-top: 2px solid var(--e2e-ink);
+  border-top: 2px solid var(--e2e-accent);
 }
 
 /* A hairline above every h2 separates sections. */
@@ -307,7 +313,7 @@ html.dark body .code-block-fade-overlay {
     }
 
     &:focus-visible {
-      outline: 2px solid var(--e2e-ink) !important;
+      outline: 2px solid var(--e2e-accent) !important;
       outline-offset: -2px;
     }
   }
@@ -440,7 +446,7 @@ html.dark body .code-block-fade-overlay {
 }
 
 #content .setup-prompt button:focus-visible {
-  outline: 2px solid var(--e2e-ink);
+  outline: 2px solid var(--e2e-accent);
   outline-offset: 3px;
 }
 
@@ -494,7 +500,7 @@ html.dark body .code-block-fade-overlay {
 }
 
 #content .provider-part-header select:hover {
-  border-color: var(--e2e-ink);
+  border-color: var(--e2e-accent);
 }
 
 #content .provider-part-header option,
@@ -530,9 +536,9 @@ html.dark body .code-block-fade-overlay {
 }
 
 #content .provider-part-tabs button[aria-pressed='true'] {
-  background: var(--e2e-ink);
-  border-color: var(--e2e-ink);
-  color: var(--e2e-surface);
+  background: var(--e2e-ta-orange);
+  border-color: var(--e2e-ta-orange);
+  color: var(--e2e-ta-orange-ink);
 }
 
 /* Mintlify's CodeBlock inside a part: the part draws the frame and the
@@ -560,7 +566,7 @@ html.dark body .code-block-fade-overlay {
 #content .provider-part button:focus-visible,
 #content .provider-part select:focus-visible,
 #content .provider-part a:focus-visible {
-  outline: 2px solid var(--e2e-ink);
+  outline: 2px solid var(--e2e-accent);
   outline-offset: 2px;
 }
 
@@ -579,11 +585,11 @@ html.dark body .code-block-fade-overlay {
 
 #content .video-card:hover,
 #content .video-card:focus-visible {
-  border-color: var(--e2e-ink);
+  border-color: var(--e2e-accent);
 }
 
 #content .video-card:focus-visible {
-  outline: 2px solid var(--e2e-ink);
+  outline: 2px solid var(--e2e-accent);
   outline-offset: 2px;
 }
 
@@ -735,9 +741,11 @@ html.dark body .code-block-fade-overlay {
 /* Sidebar page icons from a file (in #sidebar-content, or #mobile-nav below
    the desktop breakpoint) load as <img> in their own colors, while the
    Font Awesome ones are a mask filled with --gray-400 (--gray-500 in dark
-   mode, the primary color on the current page). The marks under
+   mode, the orange accent on the current page). The marks under
    /images/icons/ are drawn in black, so brightness(0) makes them a
-   silhouette and invert() lifts it to that same grey. */
+   silhouette and invert() lifts it to that same grey. The active chains
+   land on the accent (#A85400 light, #FF8001 dark) within one RGB unit in
+   Chromium. */
 :is(#sidebar-content, #mobile-nav) img[src*='/images/icons/'] {
   filter: brightness(0) invert(0.624);
 }
@@ -747,9 +755,9 @@ html.dark body .code-block-fade-overlay {
 }
 
 :is(#sidebar-content, #mobile-nav) [data-active='true'] img[src*='/images/icons/'] {
-  filter: brightness(0) invert(0.09);
+  filter: brightness(0) invert(27%) sepia(90%) saturate(1652%) hue-rotate(23deg) brightness(96%) contrast(103%);
 }
 
 .dark :is(#sidebar-content, #mobile-nav) [data-active='true'] img[src*='/images/icons/'] {
-  filter: brightness(0) invert(0.98);
+  filter: brightness(0) invert(60%) sepia(47%) saturate(5310%) hue-rotate(359deg) brightness(106%) contrast(103%);
 }
